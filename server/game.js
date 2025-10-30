@@ -13,19 +13,17 @@ export class Game extends EventEmitter {
     this.multiplier = 1.0;
 
     const crashPoint = (Math.random() * 3.5 + 1.5).toFixed(2);
-    this.emit('round_start', { crashPoint });
+    this.emit('round_start', {});
 
     const interval = setInterval(() => {
-      this.multiplier =+ (this.multiplier * 1.01).toFixed(2);
-      this.emit('multiplier', { value: this.multiplier });
-
+      this.multiplier =+ (this.multiplier * 1.04).toFixed(2);
+      
       if (this.multiplier >= crashPoint) {
         clearInterval(interval);
         this.isRunning = false;
         this.emit('crash', { value: crashPoint });
-
-        setTimeout(() => this.startRound(), 5000);
       }
+      else this.emit('multiplier', { value: this.multiplier });
     }, 100);
   }
 }

@@ -14,6 +14,12 @@ wss.on('connection', (ws) => {
     try {
       const data = JSON.parse(msg);
       console.log('📩 Received:', data);
+      if (data.type === 'admin_start_round') {
+        if (!game.isRunning) {
+          game.startRound();
+          console.log('🎮 Admin started a new round!');
+        } else console.log('⚠️ Cannot start round, already running');
+      }
     } catch {
       console.log('⚠️ Malformed message:', msg.toString());
     }
@@ -33,5 +39,3 @@ function broadcast(msg) {
     if (client.readyState === WebSocket.OPEN) client.send(text);
   });
 }
-
-game.startRound();
