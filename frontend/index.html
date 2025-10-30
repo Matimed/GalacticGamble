@@ -7,22 +7,8 @@
 <body>
   <h1>GalacticGamble - Crash Game</h1>
   <h3 id="multiplier"></h3>
+  <h3 id="crash"></h3>
   <div id="messages"></div>
-
-  <script>
-    const ws = new WebSocket('ws://localhost:8080/ws');
-    const messagesDiv = document.getElementById('messages');
-
-    ws.onopen = () => console.log('Connected to WS server');
-
-    ws.onmessage = (event) => {
-      const doc = document.getElementById('multiplier');
-      doc.textContent = event.data;
-    };
-
-    setInterval(() => {
-      ws.send(JSON.stringify({ type: 'fly' }));
-    }, 100);
-  </script>
+  <script src="./index.js"></script>
 </body>
 </html>
