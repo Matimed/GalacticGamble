@@ -6,6 +6,7 @@
 </head>
 <body>
   <h1>GalacticGamble - Crash Game</h1>
+  <h3 id="multiplier"></h3>
   <div id="messages"></div>
 
   <script>
@@ -15,14 +16,13 @@
     ws.onopen = () => console.log('Connected to WS server');
 
     ws.onmessage = (event) => {
-      const p = document.createElement('p');
-      p.textContent = event.data;
-      messagesDiv.appendChild(p);
+      const doc = document.getElementById('multiplier');
+      doc.textContent = event.data;
     };
 
     setInterval(() => {
-      ws.send(JSON.stringify({ type: 'ping', time: Date.now() }));
-    }, 1000);
+      ws.send(JSON.stringify({ type: 'fly' }));
+    }, 100);
   </script>
 </body>
 </html>

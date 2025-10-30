@@ -17,3 +17,5 @@ services:
     ports:
       - "3000:80"
     container_name: galacticgamble-front
+    depends_on:
+      - server
