@@ -1,0 +1,16 @@
+{
+    "name": "galacticgamble-server",
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+      "start": "node index.js",
+      "dev": "nodemon index.js"
+    },
+    "dependencies": {
+      "ws": "^8.15.0"
+    },
+    "devDependencies": {
+      "nodemon": "^3.0.1"
+    }
+  }
+  

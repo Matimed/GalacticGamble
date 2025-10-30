@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GalacticGamble</title>
+</head>
+<body>
+  <h1>GalacticGamble - Crash Game</h1>
+  <div id="messages"></div>
+
+  <script>
+    const ws = new WebSocket('ws://localhost:8080/ws');
+    const messagesDiv = document.getElementById('messages');
+
+    ws.onopen = () => console.log('Connected to WS server');
+
+    ws.onmessage = (event) => {
+      const p = document.createElement('p');
+      p.textContent = event.data;
+      messagesDiv.appendChild(p);
+    };
+
+    setInterval(() => {
+      ws.send(JSON.stringify({ type: 'ping', time: Date.now() }));
+    }, 1000);
+  </script>
+</body>
+</html>

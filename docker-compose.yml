@@ -1,0 +1,19 @@
+services:
+  server:
+    build:
+      context: ./server
+    container_name: galacticgamble-server
+    environment: 
+      - NODE_ENV=development
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./server:/app
+      - /app/node_modules    # evita sobrescribir node_modules dentro del contenedor
+    command: npm run dev
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    container_name: galacticgamble-front
