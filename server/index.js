@@ -1,12 +1,10 @@
 import WebSocket, { WebSocketServer } from 'ws';
 import { CONFIG } from './config.js';
 import { Game } from './game.js';
-
-const IP = '192.168.0.99';
 const wss = new WebSocketServer({ port: CONFIG.PORT });
 const game = new Game();
 
-console.log(`🚀 WebSocket server running on ws://${IP}:${CONFIG.PORT}/ws`);
+console.log(`🚀 WebSocket server running on ws://${CONFIG.HOST}:${CONFIG.PORT}/ws`);
 
 wss.on('connection', (ws) => {
   console.log('👾 New client connected');

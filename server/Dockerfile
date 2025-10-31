@@ -8,6 +8,4 @@ RUN npm install -g nodemon && npm install --include=dev
 
 COPY . .
 
-EXPOSE 8080
-
 CMD ["npm", "run", "dev"]

@@ -1,3 +1,4 @@
 export const CONFIG = {
-    PORT: process.env.PORT || 8080,
+    PORT: process.env.WS_PORT || 8080,
+    HOST: process.env.WS_HOST || 'localhost',
 }
