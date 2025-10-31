@@ -5,7 +5,9 @@ const DOM = {
     multiplier: document.getElementById('multiplier'),
     crash: document.getElementById('crash'),
     messages: document.getElementById('messages'),
+    betsTableBody: document.querySelector('#betsTable tbody')
 };
+
 function updateMultiplier(newValue){
     DOM.multiplier.textContent = `Multiplier: x${newValue}`;
 }
@@ -31,4 +33,20 @@ ws.onmessage = (event) => {
         p.textContent = `${data.user} perdio su dinero`;
         DOM.messages.appendChild(p);
     }
-};
+    else if (data.type === 'update_bets'){
+        displayBets(data.bets);
+    }
+}
+
+function displayBets(bets){
+    DOM.betsTableBody.replaceChildren();
+    bets.forEach(bet => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${bet.user}</td>
+            <td>${bet.cashOut? bet.cashOut : ''}</td>
+            <td>${bet.amount ? bet.amount : bet.profit}</td>
+        `;
+        DOM.betsTableBody.appendChild(row);
+    });
+}
