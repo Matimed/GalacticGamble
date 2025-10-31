@@ -9,7 +9,6 @@ console.log(`🚀 WebSocket server running on ws://${CONFIG.HOST}:${CONFIG.PORT}
 
 wss.on('connection', (ws) => {
   console.log('👾 New client connected');
-  ws.send(JSON.stringify({ type: 'welcome', message: 'Welcome to GalacticGamble!' }));
   ws.on('message', (msg) => {
     try {
       const data = JSON.parse(msg);
@@ -32,17 +31,17 @@ wss.on('connection', (ws) => {
 game.on('multiplier', (data) => broadcast({ type: 'multiplier', ...data }));
 game.on('crash', (data) => broadcast({ type: 'crash', ...data }));
 game.on('round_start', (data) => {
-  broadcast({ type: 'round_start', ...data });
+  broadcast({ type: 'update_crash_history', crashes: game.getCrashes()});
   broadcast({type : 'update_bets', bets: game.getBetsByAmount().map(b => b.toJSONInGame())})
+  broadcast({ type: 'round_start', ...data });
 });
 game.on('new_bet', (bet) => {
-  console.log({type : 'update_bets', bets: game.getBetsByAmount().map(b=> b.toJSONPreGame())});
   broadcast({ type: 'new_bet', ...bet.toJSONAdmin() })
-  broadcast({type : 'update_bets', bets: game.getBetsByAmount().map(b=> b.toJSONPreGame())})
+  broadcast({type : 'update_bets', total:`$${game.getTotalBets().toFixed(2)}`, bets: game.getBetsByAmount().map(b=> b.toJSONPreGame())})
 })
 game.on('user_win', (data) => {
   broadcast({ type: 'user_win', ...data })
-  broadcast({type : 'update_bets', bets: game.getBetsByProfit().map(b => b.toJSONInGame())})
+  broadcast({type : 'update_bets', total:`$${game.getTotalProfit().toFixed(2)}`, bets: game.getBetsByProfit().map(b => b.toJSONInGame())})
 })
 game.on('user_lost', (data) => broadcast({ type: 'user_lost', ...data }))
 

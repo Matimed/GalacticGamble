@@ -16,7 +16,7 @@ function updateStatus(msg) {
 
 function addBetToTable(bet) {
     const row = document.createElement('tr');
-    row.innerHTML = `<td>${bet.user}</td><td>${bet.amount}</td><td>x${bet.cashOut}</td>`;
+    row.innerHTML = `<td>${bet.user}</td><td>${bet.amount}</td><td>${bet.cashOut}</td>`;
     DOM.betsTable.appendChild(row);
   }
 

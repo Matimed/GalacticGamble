@@ -7,6 +7,7 @@ export class Game extends EventEmitter {
     this.crashPoint = null;
     this.isRunning = false;
     this.bets = [];
+    this.crashHistory = [];
   }
 
   addBet(bet){
@@ -23,6 +24,18 @@ export class Game extends EventEmitter {
     return this.bets.sort((a,b) => b.profit - a.profit)
   }
 
+  getTotalBets(){
+    return this.bets.reduce((acc, current) => {return acc + Number(current.amount)}, 0);
+  }
+
+  getTotalProfit(){
+    return this.bets.reduce((acc, current) => {return acc + Number(current.profit)}, 0);
+  }
+
+  getCrashes(){
+    return this.crashHistory;
+  }
+
   startRound() {
     if (this.isRunning) return;
     this.isRunning = true;
@@ -35,25 +48,26 @@ export class Game extends EventEmitter {
       this.multiplier *= 1.04;
       
       if (this.multiplier >= this.crashPoint) {
-        clearInterval(interval);
-        this.isRunning = false;
         this.emit('crash', { value: this.crashPoint.toFixed(2) });
         this.clearBets();
+        this.crashHistory.push(this.crashPoint);
+        clearInterval(interval);
+        this.isRunning = false;
       }
       else {
         this.emit('multiplier', { value: this.multiplier.toFixed(2) });
         this.checkBets();
       }
-    }, 500);
+    }, 50);
   }
 
   checkBets(){
     for (let i = this.bets.length - 1; i >= 0; i--) {
       const bet = this.bets[i];
       if(bet.cashOut <= this.multiplier && bet.cashOut <= this.crashPoint && !bet.profit) {
-        const profit = (bet.amount * this.multiplier).toFixed(2);
-        this.bets[i].profit = profit
-        this.emit('user_win', {user: bet.user, profit: profit});
+        const profit = bet.amount * this.multiplier;
+        this.bets[i].profit = profit;
+        this.emit('user_win', {user: bet.user, profit: profit.toFixed(2)});
       }
     }
   }
