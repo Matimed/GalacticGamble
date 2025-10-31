@@ -14,10 +14,18 @@ services:
 
   frontend:
     build: ./frontend
+    environment:
+      - WS_HOST=192.168.0.99
+      - WS_PORT=8080
     ports:
       - "3000:80"
     container_name: galacticgamble-front
     volumes:
       - ./frontend:/usr/share/nginx/html:ro
+      - config_data:/config_data
     depends_on:
       - server
+
+
+volumes:
+  config_data:

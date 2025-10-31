@@ -1,22 +1,34 @@
-const WS = new WebSocket('ws://localhost:8080/ws');
+import { CONFIG } from './config.js'
 
+const ws = new WebSocket(`ws://${CONFIG.WS_HOST}:${CONFIG.WS_PORT}/ws`);
+const DOM = {
+    multiplier: document.getElementById('multiplier'),
+    crash: document.getElementById('crash'),
+    messages: document.getElementById('messages'),
+};
 function updateMultiplier(newValue){
-    const doc = document.getElementById('multiplier');
-    doc.textContent = `Multiplier: x${newValue}`;
+    DOM.multiplier.textContent = `Multiplier: x${newValue}`;
 }
 
-WS.onopen = () => console.log('Connected to WS server');
+ws.onopen = () => console.log('Connected to WS server');
 
-WS.onmessage = (event) => {
+ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
     if (data.type === 'multiplier') {
         updateMultiplier(data.value)
     } else if (data.type === 'crash') {
         updateMultiplier(data.value)
-        const doc = document.getElementById('crash');
-        doc.textContent = `💥 Crash at x${data.value}!`;
+        DOM.crash.textContent = `💥 Crash at x${data.value}!`;
     } else if (data.type === 'round_start') {
-        const doc = document.getElementById('crash');
-        doc.textContent = `⚡ Round in progress`;
+        DOM.crash.textContent = `⚡ Round in progress`;
+        DOM.messages.replaceChildren();
+    } else if (data.type === 'user_win'){
+        const p = document.createElement('p');
+        p.textContent = `${data.user} gano ${data.profit}`;
+        DOM.messages.appendChild(p);
+    } else if (data.type === 'user_lost'){
+        const p = document.createElement('p');
+        p.textContent = `${data.user} perdio su dinero`;
+        DOM.messages.appendChild(p);
     }
 };
