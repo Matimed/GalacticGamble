@@ -10,23 +10,19 @@ const DOM = {
     cashOut: document.getElementById('cashOut'),
 };
 
-function updateStatus(msg) {
-    DOM.status.textContent = msg;
-}
-
 function addBetToTable(bet) {
     const row = document.createElement('tr');
     row.innerHTML = `<td>${bet.user}</td><td>${bet.amount}</td><td>${bet.cashOut}</td>`;
     DOM.betsTable.appendChild(row);
   }
 
-ws.onopen = () => updateStatus('✅ Connected to ws server');
+ws.onopen = () => DOM.status.textContent ='✅ Connected';
 
 ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
-    if(data.type == 'round_start') updateStatus("🚀 Round in progress")
+    if(data.type == 'round_start') DOM.status.textContent ="🚀 Round in progress";
     else if (data.type == 'crash') {
-        updateStatus("🏁 Round ended")
+        DOM.status.textContent ="🏁 Round ended";
         DOM.betsTable.replaceChildren();
     }
     else if (data.type === 'new_bet') addBetToTable(data);
@@ -35,7 +31,7 @@ ws.onmessage = (event) => {
 DOM.startBtn.onclick = () => {
     const msg = { type: 'admin_start_round' };
     ws.send(JSON.stringify(msg));
-    updateStatus('⚡ Sended start round');
+    DOM.status.textContent ='⏳ Sended start round';
 };
 
 DOM.betForm.onsubmit = (e) => {
