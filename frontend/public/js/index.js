@@ -1,4 +1,4 @@
-import { CONFIG } from './config.js'
+import { CONFIG } from '../config.js'
 
 const ws = new WebSocket(`ws://${CONFIG.WS_HOST}:${CONFIG.WS_PORT}/ws`);
 const DOM = {
