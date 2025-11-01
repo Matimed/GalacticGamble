@@ -27,21 +27,22 @@ wss.on('connection', (ws) => {
   ws.on('close', () => console.log('❌ Client disconnected'));
 });
 
-// --- reenviar los eventos del juego a todos los clientes ---
 game.on('multiplier', (data) => broadcast({ type: 'multiplier', ...data }));
-game.on('crash', (data) => broadcast({ type: 'crash', ...data }));
-game.on('round_start', (data) => {
+game.on('crash', (data) => {
+  broadcast({ type: 'crash', ...data });
   broadcast({ type: 'update_crash_history', crashes: game.getCrashes()});
-  broadcast({type : 'update_bets', bets: game.getBetsByAmount().map(b => b.toJSONInGame())})
+});
+game.on('round_start', (data) => {
+  broadcast(updateBets(0, game.getBetsByAmount(), (b => b.toJSONInGame())));
   broadcast({ type: 'round_start', ...data });
 });
 game.on('new_bet', (bet) => {
   broadcast({ type: 'new_bet', ...bet.toJSONAdmin() })
-  broadcast({type : 'update_bets', total:`$${game.getTotalBets().toFixed(2)}`, bets: game.getBetsByAmount().map(b=> b.toJSONPreGame())})
+  broadcast(updateBets(game.getTotalBets(), game.getBetsByAmount(), ( b => b.toJSONPreGame())));
 })
 game.on('user_win', (data) => {
   broadcast({ type: 'user_win', ...data })
-  broadcast({type : 'update_bets', total:`$${game.getTotalProfit().toFixed(2)}`, bets: game.getBetsByProfit().map(b => b.toJSONInGame())})
+  broadcast(updateBets(game.getTotalProfit(), game.getBetsByProfit(), ( b => b.toJSONInGame())));
 })
 game.on('user_lost', (data) => broadcast({ type: 'user_lost', ...data }))
 
@@ -51,3 +52,12 @@ function broadcast(msg) {
     if (client.readyState === WebSocket.OPEN) client.send(text);
   });
 }
+
+function updateBets(totalAmount, orderedBets, jsonFn){
+  return {
+    type : 'update_bets', 
+    totals: { amount: totalAmount.toFixed(2), users: game.getUsers()}, 
+    bets: orderedBets.map(jsonFn)
+  }
+}
+

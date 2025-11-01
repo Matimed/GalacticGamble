@@ -2,28 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>GalacticGamble</title>
+  <title>Galactic Gamble</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-  <h1>GalacticGamble - Crash Game</h1>
-  <div id="historyContainer">
-    <h3 id="historyTitle"></h3>
-    <div id="historyStrip" class="strip"></div>
+  <div class="game-container">
+    <h1 class="game-title">Galactic Gamble - Crash Game</h1>
+    <div id="historyContainer">
+      <div id="historyStrip" class="strip"></div>
+    </div>
+
+    <div class="multiplier-container">
+      <span class="multiplier" id="multiplier">1.0x</span>
+    </div>
+
+    <div class="hud">
+      <table id="betsTable">
+        <thead> <tr id="betsSummary"></tr> </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="crash"></h2>
-    <h3 id="multiplier"></h3>
-  <table id="betsTable" border="1">
-    <thead>
-      <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-  <span id="totals"></span>
-  <div id="messages"></div>
+
+  <div class="connection-overlay" id="connectionOverlay">
+    <div class="connection-message" id="connectionMsg">Server Disconected</div>
+  </div>
+
   <script type="module" src="js/index.js"></script>
 </body>
 </html>

@@ -32,6 +32,10 @@ export class Game extends EventEmitter {
     return this.bets.reduce((acc, current) => {return acc + Number(current.profit)}, 0);
   }
 
+  getUsers(){
+    return this.bets.length;
+  }
+
   getCrashes(){
     return this.crashHistory;
   }
@@ -41,16 +45,16 @@ export class Game extends EventEmitter {
     this.isRunning = true;
     this.multiplier = 1.0;
 
-    this.crashPoint = (Math.random() * 3.5 + 1.5);
+    this.crashPoint = (Math.random() * 3.5 + 1);
     this.emit('round_start', {});
 
     const interval = setInterval(() => {
       this.multiplier *= 1.04;
       
       if (this.multiplier >= this.crashPoint) {
+        this.crashHistory.push(this.crashPoint);
         this.emit('crash', { value: this.crashPoint.toFixed(2) });
         this.clearBets();
-        this.crashHistory.push(this.crashPoint);
         clearInterval(interval);
         this.isRunning = false;
       }
