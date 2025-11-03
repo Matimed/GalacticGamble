@@ -1,18 +1,14 @@
-import { CONFIG } from '../config.js'
 
-const ws = new WebSocket(`ws://${CONFIG.WS_HOST}:${CONFIG.WS_PORT}/ws`);
 const DOM = {
     multiplier: document.getElementById('multiplier'),
-    crash: document.getElementById('crash'),
     betsTableBody: document.querySelector('#betsTable tbody'),
     historyStrip: document.getElementById('historyStrip'),
     betsSummary: document.getElementById('betsSummary'),
     overlay: document.getElementById('connectionOverlay'),
     connectionMsg: document.getElementById('connectionMsg'),
-
 };
 
-function updateMultiplier(newValue, hasCrashed = 0){
+export function updateMultiplier(newValue, hasCrashed = 0){
     DOM.multiplier.textContent = `${newValue}x`;
     
     if(hasCrashed){ DOM.multiplier.classList.add('crashed'); return;}
@@ -30,24 +26,12 @@ function updateMultiplier(newValue, hasCrashed = 0){
     setTimeout(() => { multiplier.classList.remove('hit');}, 50);      
 }
 
-ws.onopen = () => {  DOM.connectionMsg.textContent = 'Waiting for connection...' }
-
-ws.onmessage = (event) => {
-    DOM.overlay.style.display = 'none';
-    const data = JSON.parse(event.data);
-    if (data.type === 'multiplier') updateMultiplier(data.value)
-    else if (data.type === 'crash') updateMultiplier(data.value, 1)
-    else if (data.type === 'update_crash_history') displayCrashes(data.crashes);
-    else if (data.type === 'update_bets'){
-        displayBets(data.bets);
-        updateBetsSummary(data.totals);
-    }
-    // else if (data.type === 'round_start') {
-    // } else if (data.type === 'user_win'){
-    // } else if (data.type === 'user_lost'){
+export function updateBets(bets, totals){
+    updateBetsTable(bets);
+    updateBetsSummary(totals);
 }
 
-function displayBets(bets){
+export function updateBetsTable(bets){
     DOM.betsTableBody.replaceChildren();
     bets.forEach(bet => {
         const row = document.createElement('tr');
@@ -59,7 +43,7 @@ function displayBets(bets){
     });
 }
 
-function updateBetsSummary(totals) {
+export function updateBetsSummary(totals) {
     DOM.betsSummary.replaceChildren();
     if(!totals) return;
     DOM.betsSummary.appendChild(createTableElement(`👥 ${totals.users}`));
@@ -83,7 +67,7 @@ function createTableElement(value, styles = []){
     return td;
 }
 
-function displayCrashes(crashes){
+export function displayCrashes(crashes){
     historyStrip.innerHTML = '';
     crashes.reverse().slice(0,15).forEach(value => {
       const div = document.createElement('div');
@@ -102,4 +86,13 @@ function categorizeMultiplier(htmlMultiplier, multiplierValue){
     if (multiplierValue < 2) htmlMultiplier.classList.add('low');
     else if (multiplierValue < 3.5) htmlMultiplier.classList.add('mid');
     else htmlMultiplier.classList.add('high');
+}
+
+export function showMessage(msg){
+    DOM.overlay.style.display = 'flex';
+    DOM.connectionMsg.textContent = msg;
+}
+
+export function closeOverlay(){
+    DOM.overlay.style.display = 'none';
 }
