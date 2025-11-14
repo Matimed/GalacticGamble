@@ -27,8 +27,8 @@ export function updateMultiplier(newValue, hasCrashed = 0){
 
     DOM.multiplier.style.boxShadow = `0 0 15px rgba(${r},${g},${b},0.6), 0 0 30px rgba(${r},${g},${b},0.4)`;
     
-    multiplier.classList.add('hit');
-    setTimeout(() => { multiplier.classList.remove('hit');}, 50);      
+    if ((newValue*100) % 2) multiplier.classList.add('hit');
+    else multiplier.classList.remove('hit');
 }
 
 export function updateBets(bets, totals){
