@@ -3,7 +3,6 @@ import {updateMultiplier, displayCrashes, updateBets, showMessage, closeOverlay}
 import {Ignition} from './game/ignition.js';
 import { OuterSpace } from './game/stars.js';
 
-
 const ws = new WebSocket(`ws://${CONFIG.WS_HOST}:${CONFIG.WS_PORT}/ws`);
 const ignition = new Ignition(600);
 const outerspace = new OuterSpace(150);
@@ -14,12 +13,26 @@ ws.onopen = () => { showMessage('Waiting for connection...');}
 ws.onmessage = (event) => {
     closeOverlay();
     const data = JSON.parse(event.data);
-    if (data.type === 'multiplier') updateMultiplier(data.value)
-    else if (data.type === 'crash') {updateMultiplier(data.value, 1); ignition.stop(); outerspace.stop();}
+    if (data.type === 'multiplier') {
+        updateMultiplier(data.value)
+        animationStart();
+    }
+    else if (data.type === 'crash') {updateMultiplier(data.value, 1); animationStop();}
     else if (data.type === 'update_crash_history') displayCrashes(data.crashes);
     else if (data.type === 'update_bets'){ updateBets(data.bets, data.totals);}
-    else if (data.type === 'round_start') { ignition.start();outerspace.start() } 
+    else if (data.type === 'round_start') { animationStart();} 
     // else if (data.type === 'user_win'){
         // } else if (data.type === 'user_lost'){
 }
 
+function animationStart(){
+    document.getElementById('rocket').style.display = 'block',
+    ignition.start();
+    outerspace.start()
+}
+
+function animationStop(){
+    document.getElementById('rocket').style.display = 'none',
+    ignition.stop();
+    outerspace.stop();
+}

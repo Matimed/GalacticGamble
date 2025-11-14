@@ -65,6 +65,7 @@ export class OuterSpace {
     }
 
     start() {
+        if(this.active) return;
         this.active = true;
         this._animate();
     };

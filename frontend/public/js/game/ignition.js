@@ -59,22 +59,26 @@ export class Ignition {
     }
 
     start() {
+        if(this.active) return;
         this.active = true;
         this._animate();
     };
 
     stop(){
+        if(!this.active) return;
         this.active = false;
         this.init();
     }
 
     _animate(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < this.numOfpartlces; i++) {
-            this.particles[i].update();
-            this.particles[i].draw();
+        if(this.active){
+            for (let i = 0; i < this.numOfpartlces; i++) {
+                this.particles[i].update();
+                this.particles[i].draw();
+            }
+            requestAnimationFrame(this._animate);
         }
-        if(this.active) requestAnimationFrame(this._animate);
     }
 }
 

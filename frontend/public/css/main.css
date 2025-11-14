@@ -66,6 +66,7 @@ body {
     position: absolute;
     top: 150px;
     left: 50%;
+    transform: translate(-50%,0);
     z-index: 20;        
 }
 
@@ -101,7 +102,13 @@ body {
     background: #e74c3c;
     box-shadow: 0 0 15px #e74c3c, 0 0 30px rgba(231,76,60,0.7);
     color: #fff;
-    transform: scale(1) rotate(0deg);
+    margin-top: 150px;
+    transform: scale(1.5) rotate(0deg);
+}
+
+#multiplier.normal {
+    transform: scale(1);
+    top: 0;
 }
   
 
@@ -143,6 +150,8 @@ body {
     z-index: 20;             
     animation: glow 3s infinite alternate;
 }
+.title-mobile { display: none; }
+
 @keyframes glow {
     0%, 100% { text-shadow: 0 0 2px #ffcc00, 0 0 5px #ffcc00; }
     50% { text-shadow: 0 0 4px #ffcc00, 0 0 8px #ff9900; }
@@ -186,4 +195,44 @@ body {
     box-shadow: 0 0 15px #ffcc00, 0 0 30px rgba(255,204,0,0.5);
     
     animation: glow 1.5s infinite alternate;
+}
+
+
+@media (width <= 600px) {
+
+    /* Game title */
+    .title-desktop { display: none; }
+    .title-mobile { 
+        display: block;
+        text-align: center;
+    }
+
+    #multiplier {
+        font-size: 1.8rem;   /* Antes 3rem */
+        padding: 12px 20px;  /* Menos volumen */
+        min-width: 100px;
+        border-radius: 8px;
+    }
+
+    /* History strip */
+    .strip {
+        padding: 4px 6px;
+        gap: 4px;
+        border-radius: 8px;
+    }
+
+    .history-box {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+
+    .hud {
+        display: none !important;
+    }
+    /* Overlay message */
+    .connection-message {
+        font-size: 24px;
+        padding: 16px 24px;
+        border-radius: 10px;
+    }
 }

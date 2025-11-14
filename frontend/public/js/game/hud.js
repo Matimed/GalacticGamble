@@ -11,7 +11,12 @@ const DOM = {
 export function updateMultiplier(newValue, hasCrashed = 0){
     DOM.multiplier.textContent = `${newValue}x`;
     
-    if(hasCrashed){ DOM.multiplier.classList.add('crashed'); return;}
+    if(hasCrashed){ 
+        DOM.multiplier.classList.remove('normal')
+        DOM.multiplier.classList.add('crashed'); 
+        return;
+    }
+    DOM.multiplier.classList.add('normal');
     DOM.multiplier.classList.remove('crashed');
     categorizeMultiplier(DOM.multiplier, newValue);
     

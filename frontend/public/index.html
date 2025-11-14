@@ -3,13 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>Galactic Gamble</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/main.css">
   <link rel="stylesheet" type="text/css" href="css/rocket.css">
+  <link rel="icon" type="image/png" sizes="36x36" href="assets/icons/36.png">
+
+  <!-- Mobile support -->
+  <link rel="manifest" href="./manifiest.webmanifest">
+
 </head>
 <body>
   <div class="game-container">
-    <h1 class="game-title">Galactic Gamble - Crash Game</h1>
+    <h1 class="title-desktop game-title">Galactic Gamble - Crash Game</h1>
+    <h1 class="title-mobile game-title">Galactic Gamble</h1>
     <div id="historyContainer">
       <div id="historyStrip" class="strip"></div>
     </div>
@@ -32,8 +39,10 @@
 
 
   <div class="main">
-    <img src="assets/spacecraft.svg" class="rocket" id="rocket"/>
-    <canvas id="ignition" width="800" height="400"></canvas>
+    <div class="rocket-container">
+      <img src="assets/spacecraft.svg" class="rocket" id="rocket"/>
+      <canvas id="ignition" width="800" height="400"></canvas>
+    </div>
   </div>
   <canvas id="stars"></canvas>
   <script type="module" src="js/main.js"></script>
