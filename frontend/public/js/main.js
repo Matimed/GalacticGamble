@@ -2,10 +2,12 @@ import { CONFIG } from '../config.js'
 import {updateMultiplier, displayCrashes, updateBets, showMessage, closeOverlay}  from './game/hud.js';
 import {Ignition} from './game/ignition.js';
 import { OuterSpace } from './game/stars.js';
+import { Sounds } from './game/sounds.js';
 
 const ws = new WebSocket(`ws://${CONFIG.WS_HOST}:${CONFIG.WS_PORT}/ws`);
 const ignition = new Ignition(600);
 const outerspace = new OuterSpace(150);
+const sounds = new Sounds();
 showMessage('Server Disconected');
 
 ws.onopen = () => { showMessage('Waiting for connection...');}
@@ -29,10 +31,12 @@ function animationStart(){
     document.getElementById('rocket').style.display = 'block',
     ignition.start();
     outerspace.start()
+    sounds.start()
 }
 
 function animationStop(){
     document.getElementById('rocket').style.display = 'none',
     ignition.stop();
     outerspace.stop();
+    sounds.stop()
 }
