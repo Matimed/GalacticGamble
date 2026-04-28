@@ -5,10 +5,10 @@ services:
     container_name: galacticgamble-server
     environment: 
       - NODE_ENV=development
-      - WS_HOST=${WS_HOST}
-      - WS_PORT=${WS_PORT}
+      - HOST=${HOST}
+      - PORT=${PORT}
     ports:
-      - "${WS_PORT}:${WS_PORT}"
+      - "${PORT}:${PORT}"
     volumes:
       - ./server:/app
       - /app/node_modules 
@@ -17,8 +17,8 @@ services:
   frontend:
     build: ./frontend
     environment:
-      - WS_HOST=${WS_HOST}
-      - WS_PORT=${WS_PORT}
+      - HOST=${HOST}
+      - PORT=${PORT}
     ports:
       - "${CLIENT_PORT}:80"
     container_name: galacticgamble-front

@@ -1,5 +1,5 @@
 import { CONFIG } from '../config.js';
-const ws = new WebSocket(`ws://${CONFIG.WS_HOST}:${CONFIG.WS_PORT}/ws`);
+const ws = new WebSocket(CONFIG.WS_URL);
 const DOM = {
     startBtn: document.getElementById('startBtn'),
     simulateAllBtn: document.getElementById('simulateAllBtn'),

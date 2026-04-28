@@ -4,7 +4,7 @@ import {Ignition} from './game/ignition.js';
 import { OuterSpace } from './game/stars.js';
 import { Sounds } from './game/sounds.js';
 
-const ws = new WebSocket(`ws://${CONFIG.WS_HOST}:${CONFIG.WS_PORT}/ws`);
+const ws = new WebSocket(CONFIG.WS_URL);
 const ignition = new Ignition(600);
 const outerspace = new OuterSpace(150);
 const sounds = new Sounds();

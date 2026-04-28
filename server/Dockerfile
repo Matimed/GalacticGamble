@@ -6,6 +6,6 @@ COPY package*.json ./
 
 RUN npm install -g nodemon && npm install --include=dev
 
-COPY src/ .
+COPY src/ ./src/
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]
